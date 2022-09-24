@@ -9,7 +9,7 @@ A node.js module, which provides a wrapper for the ALM Octane Rest API v.15.1.90
 Install with the node package manager [npm](http://npmjs.org):
 
 ```shell
-$ npm install --save https://github.com/0xda203/node-octane-client/master
+$ npm install --save https://github.com/0xda203/node-octane-client/main
 ```
 
 ## Examples
@@ -67,7 +67,7 @@ const workItem = await workspace.getEntity(Octane.ENTITY_TYPES.work_items, {
     "has_attachments",
     "attachments{}",
   ],
-  entityUuid: 1111
+  entityUuid: 1111,
 });
 ```
 
