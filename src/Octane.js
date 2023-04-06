@@ -1,7 +1,7 @@
 const request = require('request-promise');
 const expand = require('./util/expand');
-const chunk = requier('./util/chunk');
-const keepFields = requier('./util/keepFields');
+const chunk = require('./util/chunk');
+const keepFields = require('./util/keepFields');
 const { cloneDeep } = require('lodash');
 const { map } = require("bluebird");
 const promiseRetry = require('promise-retry')
