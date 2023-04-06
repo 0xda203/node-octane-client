@@ -1,6 +1,12 @@
 const request = require('request-promise');
 const expand = require('./util/expand');
+const chunk = requier('./util/chunk');
+const keepFields = requier('./util/keepFields');
 const { cloneDeep } = require('lodash');
+const { map } = require("bluebird");
+const promiseRetry = require('promise-retry')
+
+const MAX_ITEMS_PER_REQUEST = 100;
 
 function Octane(opts) {
     this.baseUrl = opts.url;
@@ -55,6 +61,37 @@ Object.prototype.getEntity = function (entityType, { fields, UUID, query, limit 
         }).then((data) => {
             return !Array.isArray(data) ? expand(data) : data.map((entity) => keepFields(expand(entity), fields.split(',')));
         })
+}
+
+Object.prototype.createEntity = function (entityType, entities) {
+    const self = this;
+
+    function insertEntity(entityType, data) {
+        return request({
+            ...self._opts,
+            method: 'POST',
+            body: {
+                data
+            },
+            json: true,
+            url: self._opts.url + `/${entityType}`,
+        })
+    }
+
+    const chunks = Array.isArray(entities) ? [...chunk(entities, MAX_ITEMS_PER_REQUEST)] : [[entities]];
+
+    return map(chunks, chunk => {
+        return promiseRetry((retry, _) => {
+            return insertEntity(entityType, chunk)
+                .catch(err => {
+                    if (err.message) console.error(err.message);
+                    if (err.code === 'ETIMEDOUT' || err.code === 'ECONNRESET') {
+                        retry();
+                    }
+                });
+        }, { retries: 1000, minTimeout: 1000, maxTimeout: 10000 });
+    }, { concurrency: 3 });
+
 }
 
 Object.prototype.getAttachmentData = function (attachmentId) {
