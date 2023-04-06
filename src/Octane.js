@@ -59,7 +59,7 @@ Object.prototype.getEntity = function (entityType, { fields, UUID, query, limit 
         .then((response) => {
             return response.hasOwnProperty('data') ? response.data : response
         }).then((data) => {
-            return !Array.isArray(data) ? expand(data) : data.map((entity) => keepFields(expand(entity), fields.split(',')));
+            return !Array.isArray(data) ? expand(data) : data.length === 1 ? keepFields(expand(data[0]), fields.split(',')) : data.map((entity) => keepFields(expand(entity), fields.split(',')));
         })
 }
 
