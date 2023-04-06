@@ -33,22 +33,27 @@ Octane.prototype.ref = function ({ spaceId, workspaceId }) {
     return extended;
 }
 
-Object.prototype.getEntity = function (entityType, { fields, entityUuid, query }) {
+Object.prototype.getEntity = function (entityType, { fields, UUID, query, limit }) {
     const self = this;
+
+    fields = fields ? fields.join(',') : 'id,name';
 
     const options = {
         ...self._opts,
         qs: {
-            fields: fields.join(',') || 'id,name',
-            query
+            fields,
+            ...(!!query) && { query: `"${query}"` },
+            ...(!!limit) && { limit: limit },
         },
         json: true,
-        url: self._opts.url + `/${entityType}` + (entityUuid ? `/${entityUuid}` : ''),
+        url: self._opts.url + `/${entityType}` + (UUID ? `/${UUID}` : ''),
     };
 
     return request(options)
-        .then((response) => response.hasOwnProperty('data') ? response.data : response).then((data) => {
-            return !Array.isArray(data) ? expand(data) : data.map((entity) => expand(entity));
+        .then((response) => {
+            return response.hasOwnProperty('data') ? response.data : response
+        }).then((data) => {
+            return !Array.isArray(data) ? expand(data) : data.map((entity) => keepFields(expand(entity), fields.split(',')));
         })
 }
 
