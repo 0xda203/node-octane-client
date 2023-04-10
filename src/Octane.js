@@ -21,7 +21,7 @@ function Octane(opts) {
     }
 }
 
-Octane.prototype.ref = function ({ spaceId, workspaceId }) {
+Octane.prototype.ref = function ({ spaceId, workspaceId = 500 }) {
     const extended = cloneDeep(this) // clone the object to avoid side effects
 
     // add the space and workspace to the url if present
