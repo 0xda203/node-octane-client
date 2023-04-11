@@ -20,7 +20,7 @@ $ npm install --save https://github.com/0xda203/node-octane-client/main
 const Octane = require("node-octane-client");
 
 const client = new Octane({
-  url: "jira.somehost.com",
+  url: "octane.somehost.com",
   apiKey: "some_api_key",
   secret: "some_api_secret",
 });
@@ -38,7 +38,7 @@ const workspace3 = client.ref({ spaceId: 11111 }).ref({ workspaceId: 22222 });
 ### Get all work_items of a given workspace
 
 ```javascript
-const workItems = await workspace.getEntity(Octane.ENTITY_TYPES.work_items, {
+const workItems = await workspace.getEntity('work_items', {
   fields: [
     "id",
     "name",
@@ -56,7 +56,7 @@ const workItems = await workspace.getEntity(Octane.ENTITY_TYPES.work_items, {
 ### Get a specific work_item with a given id in a given workspace
 
 ```javascript
-const workItem = await workspace.getEntity(Octane.ENTITY_TYPES.work_items, {
+const workItem = await workspace.getEntity('work_items', {
   fields: [
     "id",
     "name",
