@@ -95,6 +95,22 @@ Object.prototype.createEntity = function (entityType, entities) {
 
 }
 
+Object.prototype.updateEntity = function (entityType, data) {
+    const self = this;
+
+    const options = {
+        ...self._opts,
+        method: 'PUT',
+        body: {
+            data: Array.isArray(data) ? data : [data]
+        },
+        json: true,
+        url: self._opts.url + `/${entityType}`,
+    };
+
+    return wrapRequest(request(options))
+}
+
 Object.prototype.getAttachmentData = function (attachmentId) {
     const self = this;
 
