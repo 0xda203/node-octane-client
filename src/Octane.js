@@ -16,6 +16,7 @@ function Octane(opts) {
         rejectUnauthorized: false, // avoid first certificate error
         headers: {
             'ALM-OCTANE-TECH-PREVIEW': 'true', // necessary for some endpoints
+            "hpeclienttype": "HPE_MQM_UI", // header to support some requests
             'Authorization': 'Basic ' + Buffer.from(opts.apiKey + ':' + opts.secret).toString('base64') // use basic authentication for simplicity
         }
     }
