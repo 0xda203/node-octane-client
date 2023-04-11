@@ -40,7 +40,7 @@ Octane.prototype.ref = function ({ spaceId, workspaceId = 500 }) {
     return extended;
 }
 
-Object.prototype.getEntity = function (entityType, { fields, UUID, query, limit }) {
+Object.prototype.getEntity = function (entityType, { fields, UUID, query, limit } = {}) {
     const self = this;
 
     fields = fields ? fields.join(',') : 'id,name';
