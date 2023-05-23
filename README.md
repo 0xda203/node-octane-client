@@ -9,7 +9,7 @@ A node.js module, which provides a wrapper for the ALM Octane Rest API v.15.1.90
 Install with the node package manager [npm](http://npmjs.org):
 
 ```shell
-$ npm install --save https://github.com/0xda203/node-octane-client/main
+$ npm install --save git+https://github.com/0xda203/node-octane-client.git
 ```
 
 ## Examples
